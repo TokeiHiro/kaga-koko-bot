@@ -1,7 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { CLIENT_ID, GUILD_ID, TOKEN } = require('./config');
+const { CLIENT_ID, GUILD_IDS, TOKEN } = require('./config');
+
+console.log('Deploying bot commands...');
 
 const commands = [
 	new SlashCommandBuilder().setName('poke').setDescription('Poke Kaga, but why?'),
@@ -14,14 +16,10 @@ const commands = [
 
 const rest = new REST({ version: '9' }).setToken(TOKEN);
 
-rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands })
-	.then(() => console.log('Successfully registered application commands.'))
-	.catch(console.error);
+GUILD_IDS.forEach(guild_id => {
 
-// rest.put(Routes.applicationGuildCommands(CLIENT_ID, guildId2), { body: commands })
-// 	.then(() => console.log('Successfully registered application commands.'))
-// 	.catch(console.error);
+	rest.put(Routes.applicationGuildCommands(CLIENT_ID, guild_id), { body: commands })
+		.then(() => console.log(`Successfully registered application commands on guild<${guild_id}>.`))
+		.catch(console.error);
 
-// rest.put(Routes.applicationGuildCommands(CLIENT_ID, guildId3), { body: commands })
-// 	.then(() => console.log('Successfully registered application commands.'))
-// 	.catch(console.error);
+});

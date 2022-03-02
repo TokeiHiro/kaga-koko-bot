@@ -9,6 +9,7 @@
     "request": "^2.88.2"
   },
   "scripts": {
+    "prestart": "npm run deploy",
     "start": "node index.js",
     "deploy": "node deploy_commands.js",
     "dev": "nodemon index.js"
