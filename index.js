@@ -1,10 +1,7 @@
 // Require the necessary discord.js classes
 const { Client, Intents } = require('discord.js');
-const { token } = require('./config.json');
-const { MessageAttachment, MessageEmbed } = require('discord.js');
-const request = require('request');
-const { Writable } = require('stream');
 const fetch = require('node-fetch');
+const { TOKEN } = require('./config');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -17,7 +14,6 @@ client.once('ready', () => {
 const image_api_endpoint = 'https://gregors-anime-api.herokuapp.com/url/kaga-kouko' || 'https://anime-api.hisoka17.repl.co/img/nsfw/boobs';
 async function getImageReply() {
 	try {
-		// const embed = new MessageEmbed().setTitle('Kaga moment');
 		const req = await fetch(image_api_endpoint);
 		const { url } = await req.json();
 
@@ -28,7 +24,6 @@ async function getImageReply() {
 	}
 }
 
-
 // Reply to commands
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
@@ -36,7 +31,7 @@ client.on('interactionCreate', async interaction => {
 	const { commandName } = interaction;
 
 	if (commandName === 'poke') {
-		await interaction.reply("I'm reporting you to the police.");
+		await interaction.reply(`I'm reporting you to the police.`);
 	} else if (commandName === 'server') {
 		await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`);
 	} else if (commandName === 'user') {
@@ -49,4 +44,4 @@ client.on('interactionCreate', async interaction => {
 });
 
 // Login to Discord with your client's token
-client.login(token);
+client.login(TOKEN);
